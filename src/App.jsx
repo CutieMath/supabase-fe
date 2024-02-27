@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import "./App.css";
 import Header from "./components/Header";
 import { useState } from "react";
@@ -5,16 +6,24 @@ import Todos from "./components/Todos";
 import { supabase } from "./supabaseClient";
 
 function App() {
-  const [todos, setTodos] = useState([
-    {
-      id: 1,
-      text: "todo 1",
-    },
-    {
-      id: 2,
-      text: "todo 2",
-    },
-  ]);
+  useEffect(() => {
+    const fetchTodosFromSupabase = async () => {
+      const { data, error } = await supabase
+        .from("todos")
+        .select("*")
+        .order("id", { ascending: true });
+
+      if (error) {
+        console.error("Error fetching data from the backend:", error);
+      } else {
+        console.log("Data fetched from the backend:", data);
+        setTodos(data);
+      }
+    };
+    fetchTodosFromSupabase();
+  }, []);
+
+  const [todos, setTodos] = useState([]);
 
   const deleteFromSupabase = async (id) => {
     const response = await supabase.from("todos").delete().eq("id", id);
