@@ -15,10 +15,14 @@ function App() {
     },
   ]);
 
+  const deleteTodo = (id) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
+  };
+
   return (
     <div className="container">
       <Header />
-      <Todos todos={todos} />
+      <Todos todos={todos} onDelete={deleteTodo} />
     </div>
   );
 }

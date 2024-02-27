@@ -1,8 +1,10 @@
-const Todos = ({ todos }) => {
+import Todo from "./Todo";
+
+const Todos = ({ todos, onDelete }) => {
   return (
     <div>
       {todos.map((todo, index) => (
-        <p key={todo.id}>{todo.text}</p>
+        <Todo key={index} todo={todo} onDelete={onDelete} />
       ))}
     </div>
   );
