@@ -6,8 +6,20 @@ import Todos from "./components/Todos";
 import { supabase } from "./supabaseClient";
 
 function App() {
+  const signIn = async () => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: "yuxin_ye@protonmail.com",
+      password: "banana",
+    });
+    if (error) {
+      console.error("Error during sign in:", error);
+      return;
+    }
+  };
+
   useEffect(() => {
     const fetchTodosFromSupabase = async () => {
+      await signIn();
       const { data, error } = await supabase
         .from("todos")
         .select("*")
